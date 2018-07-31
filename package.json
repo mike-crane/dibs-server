@@ -1,5 +1,5 @@
 {
-  "name": "dibsServer",
+  "name": "dibs-server",
   "version": "1.0.0",
   "description": "Node server for dibs application",
   "main": "server.js",

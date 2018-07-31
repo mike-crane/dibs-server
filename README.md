@@ -1,27 +1,13 @@
-# Moving App
+# Dibs server
 
-Thinkful capstone project. A fullstack javascript application that helps users stay organized during a move. Users can register an account and begin packing their personal items into boxes. When they are ready to unpack, users can reference each box for the items they contain and begin the unpacking process, marking boxes unpacked as they go. Supports basic CRUD operations. Users can: 
+Server API for Dibs client.  
 
-* Create - Add boxes with information for room, description and contents
-* Read - Get a list of all boxes 
-* Update - Update the room, description, status and/or contents of a box
-* Delete - Delete boxes
-
-## Demo
-
-- [Live Demo](https://salty-stream-42324.herokuapp.com/)
-
-## Motivation
-
-With a plan to move in the near future, I was looking for an easy way to keep a log of all my personal items so to maintain a level of organization as well as have the ability to reference the location of items prior to unpacking. 
+* Create - Add properties and reservations
+* Read - Get a list of all properties and reservations 
+* Update - Update the property and reservation info
+* Delete - Delete properties and reservations
 
 ## Built With
-
-### Front End
-* HTML
-* CSS
-* JavaScript [ES6]
-* jQuery
 
 ### Back End
 * Node.js
@@ -54,65 +40,60 @@ With a plan to move in the near future, I was looking for an easy way to keep a 
 * Must supply First name, Last name, Username and Password in request body
 * If successful, a valid 7d expiry JWT will be provided in response body
 
-### Get All Boxes
-##### GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/boxes/{USER-GOES-HERE}
+### Get All Properties
+##### GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/properties/{USER-GOES-HERE}
 
-* This endpoint retrieves all boxes from user database
+* This endpoint retrieves all properties from user database
 * Must supply valid JWT via Bearer Authentication
-* If authentication succeeds, all User boxes will be returned
+* If authentication succeeds, all User properties will be returned
 
-### Add Box
-##### POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/boxes
+### Get All Reservations
+##### GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/reservations/{USER-GOES-HERE}
 
-* This endpoint adds a single box to user database
-* Supply box object in request body
+* This endpoint retrieves all reservations from user database
 * Must supply valid JWT via Bearer Authentication
+* If authentication succeeds, all User reservations will be returned
 
-### Update Box
-##### PUT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/boxes/{BOX-ID-GOES-HERE}
+### Add Property
+##### POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/properties
 
-* This endpoint updates a single box in user database
-* Supply box ID as route parameter
-* Supply box object in request body
-* Must supply valid JWT via Bearer Authentication
-
-### Delete Box
-##### DELETE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/boxes/{BOX-ID-GOES-HERE}
-
-* This endpoint deletes a single box from user database
-* Supply box ID as route parameter
+* This endpoint adds a single property to user database
+* Supply property object in request body
 * Must supply valid JWT via Bearer Authentication
 
-## Screenshots
+### Add Reservation
+##### POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/reservations
 
-Landing Page:
+* This endpoint adds a single reservation to user database
+* Supply reservation object in request body
+* Must supply valid JWT via Bearer Authentication
 
-![login page](public/images/screenshots/login.png)
+### Update Property
+##### PUT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/properties/{BOX-ID-GOES-HERE}
 
-Registration Page:
+* This endpoint updates a single property in user database
+* Supply property ID as route parameter
+* Supply property object in request body
+* Must supply valid JWT via Bearer Authentication
 
-![registration page](public/images/screenshots/sign-up.png)
+### Update Reservation
+##### PUT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/reservations/{BOX-ID-GOES-HERE}
 
-Main Menu:
+* This endpoint updates a single reservation in user database
+* Supply reservation ID as route parameter
+* Supply reservation object in request body
+* Must supply valid JWT via Bearer Authentication
 
-![main menu](public/images/screenshots/pack-or-unpack.png)
+### Delete Property
+##### DELETE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/properties/{BOX-ID-GOES-HERE}
 
-Packing Page:
+* This endpoint deletes a single property from user database
+* Supply property ID as route parameter
+* Must supply valid JWT via Bearer Authentication
 
-![packing page](public/images/screenshots/pack.png)
+### Delete Reservation
+##### DELETE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/api/reservations/{BOX-ID-GOES-HERE}
 
-Unpacking Page:
-
-![unpacking page](public/images/screenshots/unpack.png)
-
-Add Box Page:
-
-![add box page](public/images/screenshots/new-box.png)
-
-Edit Box Page:
-
-![edit box page](public/images/screenshots/edit-box.png)
-
-Box Contents:
-
-![box contents](public/images/screenshots/box-contents.png)
+* This endpoint deletes a single reservation from user database
+* Supply reservation ID as route parameter
+* Must supply valid JWT via Bearer Authentication

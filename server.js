@@ -21,9 +21,6 @@ const app = express();
 // logging
 app.use(morgan('common'));
 
-// Server Static
-app.use(express.static(path.join(__dirname, 'public')));
-
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
