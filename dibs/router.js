@@ -26,7 +26,7 @@ router.get('/reservations', jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
-// Post new box
+// Post new property
 router.post('/', jwtAuth, (req, res) => {
 
   const requiredFields = ['room', 'description', 'contents'];
