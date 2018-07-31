@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const passport = require('passport');
 
 // destructuring assignment with renaming
-const { router: boxesRouter } = require('./boxes');
+const { router: dibsRouter } = require('./dibs');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { router: usersRouter } = require('./users');
 
@@ -40,16 +40,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
-app.use('/api/boxes/', boxesRouter);
-
-const jwtAuth = passport.authenticate('jwt', { session: false });
-
-// A protected endpoint which needs a valid JWT to access it
-app.get('/api/protected', jwtAuth, (req, res) => {
-  return res.json({
-    data: 'rosebud'
-  });
-});
+app.use('/api/dibs/', dibsRouter);
 
 app.use('*', (req, res) => {
   return res.status(404).json({ message: 'Not Found' });

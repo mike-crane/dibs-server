@@ -1,8 +1,8 @@
 {
-  "name": "moving-app",
+  "name": "dibsServer",
   "version": "1.0.0",
-  "description": "An app designed to help keep items orgainized during a move.",
-  "main": "app.js",
+  "description": "Node server for dibs application",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --exit"

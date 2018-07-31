@@ -6,6 +6,6 @@ deploy:
   provider: heroku
   api_key:
     secure: VWKr+trHbi+1GxurHsbA3bV8cxpKFNEoZP0GPVyy546KVXBFIg6AM1lvPk6aA/BKYWUQUBhMVFtRqliCFZOq91CsOTMPxbGJzAhRARom+NS3l7vdBVx2iaMjP9/boMh7rXYz9tBKBwgpgg1pB8JSGqCZ6Isw/Jqt9rHZxSMBFEdpkuTPKgcvuQ3Ph75BPZG9ox1n4T1HdN/elZGQh2qP3q+d4l0y3JhaLPizayYEj5oIJ2bhUTZY/fysgUsUwd3V3MHxR2IUxN9YFKEWOPeS67u+kFPGM4x5hya5itVz9fLXKv41STBc0r0BZtlm59Pk+uElmGgBn8dJz/HPc/1sxsaehWG7eub7wv83L46A/16ps5rCXnSnc2cE2Y5mzhhdsfR4ZnRETt141HdVrf1fYUKqEXT0UO19byBnodLeOMRvHbJR5N7dkOq7OtsGWpJiOTcq/82B3jIOPlHZ/nVpJeVlSis/12302hIbmrrjm5VnfkFQYK2Lg1Lhldu9HcQZ6FBLmJ7ZZtIi40h8gkVKLujwmywLEaertkeZS74mLdpZBhr1D3asxQQd8TYaznyOz1TBQHtUjiRQgDxqdkScopXx4W8ZpAK+dlfyySOZmfZ4VHoSxXXnARR6boSCjCY7E+lmK5JuodOeoT5kJTKRzqftt7GuHpzP7SdIyy6hJCM=
-  app: salty-stream-42324
+  app: gentle-hollows-75217
   on:
-    repo: mike-crane/moving-app
+    repo: mike-crane/dibsServer

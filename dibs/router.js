@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const { Box } = require('./models');
+const { Properties, Reservations } = require('./models');
 
 const router = express.Router();
 
@@ -12,12 +12,18 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.use(jsonParser)
 
-// Get all boxes
-router.get('/:user', jwtAuth, (req, res) => {
-  return Box.find({user: req.params.user})
-    .then(boxes => res.status(200).json(boxes.map(box => box.serialize())))
+// Get all properties
+router.get('/properties', jwtAuth, (req, res) => {
+  return Properties.find()
+    .then(properties => res.status(200).json(properties.map(property => property.serialize())))
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
-  
+});
+
+// Get all reservations
+router.get('/reservations', jwtAuth, (req, res) => {
+  return Reservations.find()
+    .then(reservations => res.status(200).json(reservations.map(reservation => reservation.serialize())))
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
 // Post new box
