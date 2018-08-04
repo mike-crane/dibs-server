@@ -4,46 +4,53 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const PropertiesSchema = mongoose.Schema({
-  user: { type: String },
-  room: { type: String, required: true },
-  description: { type: String, required: true },
-  contents: { type: String, required: true },
-  unpacked: { type: Boolean, default: false }
+const statesArray = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
+
+const PropertySchema = mongoose.Schema({
+  name: { type: String, required: true },
+  address: { type: Object, required: true,
+    street: String, required: true,
+    city: String, required: true,
+    state: {
+      type: String,
+      uppercase: true,
+      required: true,
+      enum: statesArray
+    },
+    zipcode: Number, required: true
+  },
+  type: { type: String, required: true },
+  owner: { type: String, required: true },
+  thumbUrl: { type: String }
 });
 
-PropertiesSchema.methods.serialize = function () {
+PropertySchema.methods.serialize = function () {
   return {
-    user: this.user,
-    room: this.room,
-    description: this.description,
-    contents: this.contents,
-    id: this._id,
-    unpacked: this.unpacked
+    name: this.name,
+    address: this.address,
+    type: this.type,
+    owner: this.owner,
+    thumbUrl: this.thumbUrl,
+    id: this._id
   };
 };
 
-const Properties = mongoose.model('Properties', PropertiesSchema);
+const Property = mongoose.model('Property', PropertySchema);
 
-const ReservationsSchema = mongoose.Schema({
+const ReservationSchema = mongoose.Schema({
   user: { type: String },
-  room: { type: String, required: true },
-  description: { type: String, required: true },
-  contents: { type: String, required: true },
-  unpacked: { type: Boolean, default: false }
+  start: { type: Date, required: true },
+  end: { type: Date, required: true }
 });
 
-ReservationsSchema.methods.serialize = function () {
+ReservationSchema.methods.serialize = function () {
   return {
     user: this.user,
-    room: this.room,
-    description: this.description,
-    contents: this.contents,
-    id: this._id,
-    unpacked: this.unpacked
+    start: this.start,
+    end: this.end
   };
 };
 
-const Reservations = mongoose.model('Reservations', ReservationsSchema);
+const Reservation = mongoose.model('Reservation', ReservationSchema);
 
-module.exports = { Properties, Reservations };
+module.exports = { Property, Reservation };

@@ -5,7 +5,7 @@ const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 
 const { app, runServer, closeServer } = require('../server');
-const { Box } = require('../boxes');
+const { Reservations } = require('../dibs');
 const { User } = require('../users');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
@@ -16,7 +16,7 @@ const expect = chai.expect;
 // see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
 
-describe('/api/box', () => {
+describe('/api/reservation', () => {
   const room = 'exampleRoom';
   const description = 'exampleDesc';
   const contents = 'exampleCont';
@@ -48,7 +48,7 @@ describe('/api/box', () => {
     return User.remove({});
   });
 
-  describe('/api/boxes', () => {
+  describe('/api/reservations', () => {
     const token = jwt.sign(
       {
         user: {
@@ -68,20 +68,20 @@ describe('/api/box', () => {
       it('Should return an empty array initially', () => {
 
         return chai.request(app)
-        .get('/api/boxes/:user')
-        .set('authorization', `Bearer ${token}`)
-        .then(res => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('array');
-          expect(res.body).to.have.length(0);
-        });
+          .get('/api/reservations/:user')
+          .set('authorization', `Bearer ${token}`)
+          .then(res => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('array');
+            expect(res.body).to.have.length(0);
+          });
       });
     });
     describe('POST', () => {
-      it('Should return a newly created box', () => {
+      it('Should return a newly created reservation', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({ room, description, contents })
           .then(res => {
@@ -98,10 +98,10 @@ describe('/api/box', () => {
             expect(contents).to.equal('exampleCont');
           });
       });
-      it('Should reject boxes with missing room', () => {
+      it('Should reject reservations with missing room', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             description,
@@ -122,10 +122,10 @@ describe('/api/box', () => {
             expect(res.body.location).to.equal('room');
           });
       });
-      it('Should reject boxes with missing description', () => {
+      it('Should reject reservations with missing description', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             room,
@@ -146,10 +146,10 @@ describe('/api/box', () => {
             expect(res.body.location).to.equal('description');
           });
       });
-      it('Should reject boxes with missing contents', () => {
+      it('Should reject reservations with missing contents', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             room,
@@ -170,10 +170,10 @@ describe('/api/box', () => {
             expect(res.body.location).to.equal('contents');
           });
       });
-      it('Should reject boxes with empty room', () => {
+      it('Should reject reservations with empty room', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             room: '',
@@ -197,10 +197,10 @@ describe('/api/box', () => {
             expect(res.body.location).to.equal('room');
           });
       });
-      it('Should reject boxes with empty description', () => {
+      it('Should reject reservations with empty description', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             room,
@@ -224,10 +224,10 @@ describe('/api/box', () => {
             expect(res.body.location).to.equal('description');
           });
       });
-      it('Should reject boxes with empty contents', () => {
+      it('Should reject reservations with empty contents', () => {
         return chai
           .request(app)
-          .post('/api/boxes')
+          .post('/api/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
             room,
@@ -254,57 +254,57 @@ describe('/api/box', () => {
     });
 
     describe('PUT', () => {
-      it('it should UPDATE a box given the id', () => {
+      it('it should UPDATE a reservation given the id', () => {
         const updateData = {
           room: 'foyer',
           description: 'decorations',
           contents: 'vase, picture frames'
         };
 
-        return Box
+        return Reservations
           .findOne()
-          .then((box) => {
-            updateData.id = box.id;
+          .then((reservations) => {
+            updateData.id = reservations.id;
 
             // make request then inspect it to make sure it reflects
             // data we sent
             return chai.request(app)
-              .put(`/api/boxes/${box.id}`)
+              .put(`/api/reservations/${reservations.id}`)
               .set('authorization', `Bearer ${token}`)
               .send(updateData);
           })
           .then((res) => {
             expect(res).to.have.status(204);
 
-            return Box.findById(updateData.id);
+            return Reservations.findById(updateData.id);
           })
-          .then(function (box) {
-            expect(box.room).to.equal(updateData.room);
-            expect(box.contents).to.equal(updateData.contents);
+          .then(function (reservations) {
+            expect(reservations.room).to.equal(updateData.room);
+            expect(reservations.contents).to.equal(updateData.contents);
           });
       });
     });
 
     describe('DELETE', () => {
-      it('it should DELETE a box given the id', () => {
-        let box;
+      it('it should DELETE a reservation given the id', () => {
+        let reservation;
 
-        return Box
+        return Reservations
           .findOne()
-          .then(function (_box) {
-            box = _box;
+          .then(function (_reservation) {
+            reservation = _reservation;
             return chai
-            .request(app)
-            .delete(`/api/boxes/${box.id}`)
-            .set('authorization', `Bearer ${token}`);
+              .request(app)
+              .delete(`/api/reservations/${reservation.id}`)
+              .set('authorization', `Bearer ${token}`);
           })
           .then(function (res) {
             expect(res).to.have.status(204);
-            return Box
-            .findById(box.id);
+            return Reservations
+              .findById(reservation.id);
           })
-          .then(function (_box) {
-            expect(_box).to.be.null;
+          .then(function (_reservation) {
+            expect(_reservation).to.be.null;
           });
       });
     });

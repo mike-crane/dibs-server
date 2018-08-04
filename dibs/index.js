@@ -1,5 +1,5 @@
 'use strict';
-const { Properties, Reservations } = require('./models');
+const { Property, Reservation } = require('./models');
 const { router } = require('./router');
 
-module.exports = { Properties, Reservations, router };
+module.exports = { Property, Reservation, router };
