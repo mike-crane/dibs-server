@@ -39,6 +39,7 @@ const Property = mongoose.model('Property', PropertySchema);
 
 const ReservationSchema = mongoose.Schema({
   user: { type: String },
+  propertyName: { type: String, required: true },
   start: { type: Date, required: true },
   end: { type: Date, required: true }
 });
@@ -46,8 +47,10 @@ const ReservationSchema = mongoose.Schema({
 ReservationSchema.methods.serialize = function () {
   return {
     user: this.user,
+    propertyName: this.propertyName,
     start: this.start,
-    end: this.end
+    end: this.end,
+    id: this._id
   };
 };
 
