@@ -16,7 +16,7 @@ const expect = chai.expect;
 // see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
 
-describe('/api/property', () => {
+describe('/api/dibs/property', () => {
   const name = 'exampleName';
   const address = {
     street: 'exampleStreet',
@@ -55,7 +55,7 @@ describe('/api/property', () => {
     return User.remove({});
   });
 
-  describe('/api/properties', () => {
+  describe('/api/dibs/properties', () => {
     const token = jwt.sign(
       {
         user: {
@@ -75,7 +75,7 @@ describe('/api/property', () => {
       it('Should return an empty array initially', () => {
 
         return chai.request(app)
-        .get('/api/properties/:user')
+        .get('/api/dibs/properties')
         .set('authorization', `Bearer ${token}`)
         .then(res => {
           expect(res).to.have.status(200);
@@ -88,7 +88,7 @@ describe('/api/property', () => {
       it('Should return a newly created property', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({ name, address, type, owner, thumbUrl })
           .then(res => {
@@ -96,6 +96,10 @@ describe('/api/property', () => {
             expect(res.body).to.be.an('object');
             const name = res.body.name;
             const address = res.body.address;
+            const street = res.body.address.street;
+            const city = res.body.address.city;
+            const state = res.body.address.state;
+            const zipcode = res.body.address.zipcode;
             const type = res.body.type;
             const owner = res.body.owner;
             const thumbUrl = res.body.thumbUrl;
@@ -105,6 +109,10 @@ describe('/api/property', () => {
             expect(owner).to.be.a("string");
             expect(thumbUrl).to.be.a("string");
             expect(name).to.equal('exampleName');
+            expect(street).to.equal('exampleStreet');
+            expect(state).to.equal('exampleState');
+            expect(city).to.equal('exampleCity');
+            expect(zipcode).to.equal(27587);
             expect(type).to.equal('exampleType');
             expect(owner).to.equal('exampleOwner');
             expect(thumbUrl).to.equal("exampleUrl");
@@ -113,7 +121,7 @@ describe('/api/property', () => {
       it('Should reject properties with missing name', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             address,
@@ -139,7 +147,7 @@ describe('/api/property', () => {
       it('Should reject properties with missing address', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name, 
@@ -165,7 +173,7 @@ describe('/api/property', () => {
       it('Should reject properties with missing type', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name,
@@ -191,7 +199,7 @@ describe('/api/property', () => {
       it('Should reject properties with missing owner', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name,
@@ -217,7 +225,7 @@ describe('/api/property', () => {
       it('Should reject properties with empty name', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name: '',
@@ -243,39 +251,10 @@ describe('/api/property', () => {
             expect(res.body.location).to.equal('name');
           });
       });
-      it('Should reject properties with empty address', () => {
-        return chai
-          .request(app)
-          .post('/api/properties')
-          .set('authorization', `Bearer ${token}`)
-          .send({
-            name,
-            address: {},
-            type,
-            owner,
-            thumbUrl
-          })
-          .then(() =>
-            expect.fail(null, null, 'Request should not succeed')
-          )
-          .catch(err => {
-            if (err instanceof chai.AssertionError) {
-              throw err;
-            }
-
-            const res = err.response;
-            expect(res).to.have.status(422);
-            expect(res.body.reason).to.equal('ValidationError');
-            expect(res.body.message).to.equal(
-              'Must be at least 1 characters long'
-            );
-            expect(res.body.location).to.equal('address');
-          });
-      });
       it('Should reject properties with empty type', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name,
@@ -304,7 +283,7 @@ describe('/api/property', () => {
       it('Should reject properties with empty owner', () => {
         return chai
           .request(app)
-          .post('/api/properties')
+          .post('/api/dibs/properties')
           .set('authorization', `Bearer ${token}`)
           .send({
             name,
@@ -345,7 +324,7 @@ describe('/api/property', () => {
             // data we sent
             return chai
               .request(app)
-              .put(`/api/properties/${property.id}`)
+              .put(`/api/dibs/properties/${property.id}`)
               .set("authorization", `Bearer ${token}`)
               .send(updateData);
           })
@@ -371,7 +350,7 @@ describe('/api/property', () => {
             property = _property;
             return chai
             .request(app)
-            .delete(`/api/properties/${property.id}`)
+            .delete(`/api/dibs/properties/${property.id}`)
             .set('authorization', `Bearer ${token}`);
           })
           .then(function (res) {

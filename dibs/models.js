@@ -38,7 +38,7 @@ PropertySchema.methods.serialize = function () {
 const Property = mongoose.model('Property', PropertySchema);
 
 const ReservationSchema = mongoose.Schema({
-  user: { type: String },
+  user: { type: String, required: true },
   propertyName: { type: String, required: true },
   start: { type: Date, required: true },
   end: { type: Date, required: true }

@@ -91,7 +91,7 @@ router.post("/properties", jwtAuth, (req, res) => {
 
 // Post new reservation
 router.post("/reservations", jwtAuth, (req, res) => {
-  const requiredFields = ["user", "start", "end"];
+  const requiredFields = ["user", "propertyName", "start", "end"];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -105,6 +105,9 @@ router.post("/reservations", jwtAuth, (req, res) => {
 
   const sizedFields = {
     user: {
+      min: 1
+    },
+    propertyName: {
       min: 1
     },
     start: {

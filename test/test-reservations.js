@@ -2,10 +2,11 @@
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const chaiDatetime = require('chai-datetime');
 const jwt = require('jsonwebtoken');
 
 const { app, runServer, closeServer } = require('../server');
-const { Reservations } = require('../dibs');
+const { Reservation } = require('../dibs');
 const { User } = require('../users');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
@@ -15,11 +16,13 @@ const expect = chai.expect;
 // in our tests.
 // see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
+chai.use(chaiDatetime);
 
-describe('/api/reservation', () => {
-  const room = 'exampleRoom';
-  const description = 'exampleDesc';
-  const contents = 'exampleCont';
+describe('/api/dibs/reservation', () => {
+  const user = 'exampleUser';
+  const propertyName = 'exampleProperty';
+  const start = new Date('2018-05-01');
+  const end = new Date('2018-05-11');
   const username = 'exampleUser';
   const password = 'examplePass';
   const firstName = 'Example';
@@ -48,7 +51,7 @@ describe('/api/reservation', () => {
     return User.remove({});
   });
 
-  describe('/api/reservations', () => {
+  describe('/api/dibs/reservations', () => {
     const token = jwt.sign(
       {
         user: {
@@ -68,7 +71,7 @@ describe('/api/reservation', () => {
       it('Should return an empty array initially', () => {
 
         return chai.request(app)
-          .get('/api/reservations/:user')
+          .get('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .then(res => {
             expect(res).to.have.status(200);
@@ -81,31 +84,29 @@ describe('/api/reservation', () => {
       it('Should return a newly created reservation', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
-          .send({ room, description, contents })
+          .send({ user, propertyName, start, end })
           .then(res => {
             expect(res).to.have.status(201);
             expect(res.body).to.be.an('object');
-            const room = res.body.room;
-            const description = res.body.description;
-            const contents = res.body.contents;
-            expect(room).to.be.a('string');
-            expect(description).to.be.a('string');
-            expect(contents).to.be.a('string');
-            expect(room).to.equal('exampleRoom');
-            expect(description).to.equal('exampleDesc');
-            expect(contents).to.equal('exampleCont');
+            const user = res.body.user;
+            const propertyName = res.body.propertyName;
+            expect(propertyName).to.be.a('string');
+            expect(user).to.be.a('string');
+            expect(propertyName).to.equal('exampleProperty');
+            expect(user).to.equal('exampleUser');
           });
       });
-      it('Should reject reservations with missing room', () => {
+      it('Should reject reservations with missing propertyName', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            description,
-            contents
+            user,
+            start,
+            end
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -119,17 +120,18 @@ describe('/api/reservation', () => {
             expect(res).to.have.status(422);
             expect(res.body.reason).to.equal('ValidationError');
             expect(res.body.message).to.equal('Missing field');
-            expect(res.body.location).to.equal('room');
+            expect(res.body.location).to.equal('propertyName');
           });
       });
-      it('Should reject reservations with missing description', () => {
+      it('Should reject reservations with missing start', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            room,
-            contents
+            user,
+            propertyName,
+            end
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -143,17 +145,18 @@ describe('/api/reservation', () => {
             expect(res).to.have.status(422);
             expect(res.body.reason).to.equal('ValidationError');
             expect(res.body.message).to.equal('Missing field');
-            expect(res.body.location).to.equal('description');
+            expect(res.body.location).to.equal('start');
           });
       });
-      it('Should reject reservations with missing contents', () => {
+      it('Should reject reservations with missing end', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            room,
-            description
+            user,
+            propertyName,
+            start
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -167,18 +170,19 @@ describe('/api/reservation', () => {
             expect(res).to.have.status(422);
             expect(res.body.reason).to.equal('ValidationError');
             expect(res.body.message).to.equal('Missing field');
-            expect(res.body.location).to.equal('contents');
+            expect(res.body.location).to.equal('end');
           });
       });
-      it('Should reject reservations with empty room', () => {
+      it('Should reject reservations with empty property name', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            room: '',
-            description,
-            contents
+            user,
+            propertyName: '',
+            start,
+            end
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -194,18 +198,19 @@ describe('/api/reservation', () => {
             expect(res.body.message).to.equal(
               'Must be at least 1 characters long'
             );
-            expect(res.body.location).to.equal('room');
+            expect(res.body.location).to.equal('propertyName');
           });
       });
-      it('Should reject reservations with empty description', () => {
+      it('Should reject reservations with empty start', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            room,
-            description: '',
-            contents
+            user,
+            propertyName,
+            start: '',
+            end
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -221,18 +226,19 @@ describe('/api/reservation', () => {
             expect(res.body.message).to.equal(
               'Must be at least 1 characters long'
             );
-            expect(res.body.location).to.equal('description');
+            expect(res.body.location).to.equal('start');
           });
       });
-      it('Should reject reservations with empty contents', () => {
+      it('Should reject reservations with empty end', () => {
         return chai
           .request(app)
-          .post('/api/reservations')
+          .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            room,
-            description,
-            contents: ''
+            user,
+            propertyName,
+            start,
+            end: ''
           })
           .then(() =>
             expect.fail(null, null, 'Request should not succeed')
@@ -248,7 +254,7 @@ describe('/api/reservation', () => {
             expect(res.body.message).to.equal(
               'Must be at least 1 characters long'
             );
-            expect(res.body.location).to.equal('contents');
+            expect(res.body.location).to.equal('end');
           });
       });
     });
@@ -256,31 +262,32 @@ describe('/api/reservation', () => {
     describe('PUT', () => {
       it('it should UPDATE a reservation given the id', () => {
         const updateData = {
-          room: 'foyer',
-          description: 'decorations',
-          contents: 'vase, picture frames'
+          user: 'newUser',
+          propertyName: 'newProperty',
+          start: new Date('2011-10-01'),
+          end: new Date('2011-10-11')
         };
 
-        return Reservations
+        return Reservation
           .findOne()
-          .then((reservations) => {
-            updateData.id = reservations.id;
+          .then((reservation) => {
+            updateData.id = reservation.id;
 
             // make request then inspect it to make sure it reflects
             // data we sent
             return chai.request(app)
-              .put(`/api/reservations/${reservations.id}`)
+              .put(`/api/dibs/reservations/${reservation.id}`)
               .set('authorization', `Bearer ${token}`)
               .send(updateData);
           })
           .then((res) => {
             expect(res).to.have.status(204);
 
-            return Reservations.findById(updateData.id);
+            return Reservation.findById(updateData.id);
           })
-          .then(function (reservations) {
-            expect(reservations.room).to.equal(updateData.room);
-            expect(reservations.contents).to.equal(updateData.contents);
+          .then(function (reservation) {
+            expect(reservation.propertyName).to.equal(updateData.propertyName);
+            expect(reservation.start).to.equalDate(updateData.start);
           });
       });
     });
@@ -289,18 +296,18 @@ describe('/api/reservation', () => {
       it('it should DELETE a reservation given the id', () => {
         let reservation;
 
-        return Reservations
+        return Reservation
           .findOne()
           .then(function (_reservation) {
             reservation = _reservation;
             return chai
               .request(app)
-              .delete(`/api/reservations/${reservation.id}`)
+              .delete(`/api/dibs/reservations/${reservation.id}`)
               .set('authorization', `Bearer ${token}`);
           })
           .then(function (res) {
             expect(res).to.have.status(204);
-            return Reservations
+            return Reservation
               .findById(reservation.id);
           })
           .then(function (_reservation) {
