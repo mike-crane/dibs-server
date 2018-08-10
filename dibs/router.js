@@ -28,7 +28,8 @@ router.get('/reservations', jwtAuth, (req, res) => {
 
 // Post new property
 router.post("/properties", jwtAuth, (req, res) => {
-  const requiredFields = ["name", "address", "type", "owner"];
+  console.log(req.body);
+  const requiredFields = ["name", "street", "city", "state", "zipcode", "type", "thumbUrl"];
   // const requiredFields = ["name", "type", "owner"];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -38,40 +39,6 @@ router.post("/properties", jwtAuth, (req, res) => {
       reason: "ValidationError",
       message: "Missing field",
       location: missingField
-    });
-  }
-
-  const sizedFields = {
-    name: {
-      min: 1
-    },
-    type: {
-      min: 1
-    },
-    owner: {
-      min: 1
-    }
-  };
-
-  const tooSmallField = Object.keys(sizedFields).find(
-    field =>
-      "min" in sizedFields[field] &&
-      req.body[field].trim().length < sizedFields[field].min
-  );
-  const tooLargeField = Object.keys(sizedFields).find(
-    field =>
-      "max" in sizedFields[field] &&
-      req.body[field].trim().length > sizedFields[field].max
-  );
-
-  if (tooSmallField || tooLargeField) {
-    return res.status(422).json({
-      code: 422,
-      reason: "ValidationError",
-      message: tooSmallField
-        ? `Must be at least ${sizedFields[tooSmallField].min} characters long`
-        : `Must be at most ${sizedFields[tooLargeField].max} characters long`,
-      location: tooSmallField || tooLargeField
     });
   }
 
@@ -91,7 +58,7 @@ router.post("/properties", jwtAuth, (req, res) => {
 
 // Post new reservation
 router.post("/reservations", jwtAuth, (req, res) => {
-  const requiredFields = ["user", "propertyName", "start", "end"];
+  const requiredFields = ["username", "propertyName", "start", "end"];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -100,43 +67,6 @@ router.post("/reservations", jwtAuth, (req, res) => {
       reason: "ValidationError",
       message: "Missing field",
       location: missingField
-    });
-  }
-
-  const sizedFields = {
-    user: {
-      min: 1
-    },
-    propertyName: {
-      min: 1
-    },
-    start: {
-      min: 1
-    },
-    end: {
-      min: 1
-    }
-  };
-
-  const tooSmallField = Object.keys(sizedFields).find(
-    field =>
-      "min" in sizedFields[field] &&
-      req.body[field].trim().length < sizedFields[field].min
-  );
-  const tooLargeField = Object.keys(sizedFields).find(
-    field =>
-      "max" in sizedFields[field] &&
-      req.body[field].trim().length > sizedFields[field].max
-  );
-
-  if (tooSmallField || tooLargeField) {
-    return res.status(422).json({
-      code: 422,
-      reason: "ValidationError",
-      message: tooSmallField
-        ? `Must be at least ${sizedFields[tooSmallField].min} characters long`
-        : `Must be at most ${sizedFields[tooLargeField].max} characters long`,
-      location: tooSmallField || tooLargeField
     });
   }
 
@@ -157,7 +87,7 @@ router.post("/reservations", jwtAuth, (req, res) => {
 
 // Update property with a given id
 router.put('/properties/:id', jwtAuth, jsonParser, (req, res) => {
-  const requiredFields = ["name", "address", "type", "owner", "id"];
+  const requiredFields = ["name", "street", "city", "state", "zipcode", "type", "id"];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -177,7 +107,7 @@ router.put('/properties/:id', jwtAuth, jsonParser, (req, res) => {
 
 // Update reservation with a given id
 router.put("/reservations/:id", jwtAuth, jsonParser, (req, res) => {
-  const requiredFields = ["user", "start", "end", "id"];
+  const requiredFields = ["username", "start", "end", "id"];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
