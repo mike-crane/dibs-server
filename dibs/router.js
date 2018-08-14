@@ -26,6 +26,13 @@ router.get('/reservations', jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
+// Get reservations by user
+router.get('/reservations/:user', jwtAuth, (req, res) => {
+  return Reservation.find({username:req.params.user})
+    .then(reservations => res.status(200).json(reservations.map(reservation => reservation.serialize())))
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
 // Post new property
 router.post("/properties", jwtAuth, (req, res) => {
   console.log(req.body);
@@ -87,7 +94,7 @@ router.post("/reservations", jwtAuth, (req, res) => {
 
 // Update property with a given id
 router.put('/properties/:id', jwtAuth, jsonParser, (req, res) => {
-  const requiredFields = ["name", "street", "city", "state", "zipcode", "type", "id"];
+  const requiredFields = ["name", "street", "city", "state", "zipcode", "type", "thumbUrl", "id"];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
