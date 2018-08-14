@@ -2,10 +2,3 @@ language: node_js
 node_js: node
 services:
 - mongodb
-deploy:
-  provider: heroku
-  api_key:
-    secure: q+ips5gzHDu6tQBCd2yXXyRYtWcNhIxjnY836xQ4hEqGJapDiudiOCHixnW62VhWhEIOM3Mh+LiMsuewf58+AESDeSjPb187mnRr4AAJaUc1Oca8H+JiWt2KuoUA2sZ6q+TRaLyv1/c6sjiGGeIQGt8jkfdZ7RypYHMw5w8kgcbFQqguAPJGElDJfRFsXx583QrHV4zXpJCDAMqztKEK7/hNlx8Kx0SZcQuQ2J+Gu+qDZQ0rt5lUlwgUIIBvUUbCpVA+H2rbQOAANHlANtouV3CM9MlJlkwhFCaVTtu/2w3bapcUZK3rsxzDyNGUAQre409UFHUR8LGCg6j2Xypa9DAdlucnH3ua4DEVbHZ9l+JgAN9vSNVnWLX1d7FyajDLc89kWK6u6MGVWhtAROrEY0lZA2pLXxkjG4BpPPSCEJ75c2SRBaw9cWSXkmTxHwoZmNhKBoLf3f7olKgr/pKPNRIdFgtZfCGUDA6NtMiZIQZGmy8gKrMpCduo/6eBwXFqNnjpF4qppuAzmj7/OyQ5JF+Wc4DB8ljqnQP7RPkhEil5sUBbL+DbwUmtF1C/MKTegXoD+8Xw0xhPQ+aFllxrtSSRTEDn4Jy7m9PBIKPqEO+vkUVsi7sisUcBoIHnh8GwVUnqsJr6zeF3M8/hALkidZAYhHK8ZIp4EdZO6YvAhaw=
-  app: dibs-server
-  on:
-    repo: mike-crane/dibs-server
