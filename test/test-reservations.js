@@ -19,7 +19,7 @@ chai.use(chaiHttp);
 chai.use(chaiDatetime);
 
 describe('/api/dibs/reservation', () => {
-  const user = 'exampleUser';
+  // const username = 'exampleUser';
   const propertyName = 'exampleProperty';
   const start = new Date('2018-05-01');
   const end = new Date('2018-05-11');
@@ -86,16 +86,16 @@ describe('/api/dibs/reservation', () => {
           .request(app)
           .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
-          .send({ user, propertyName, start, end })
+          .send({ username, propertyName, start, end })
           .then(res => {
             expect(res).to.have.status(201);
             expect(res.body).to.be.an('object');
-            const user = res.body.user;
+            const username = res.body.username;
             const propertyName = res.body.propertyName;
             expect(propertyName).to.be.a('string');
-            expect(user).to.be.a('string');
+            expect(username).to.be.a('string');
             expect(propertyName).to.equal('exampleProperty');
-            expect(user).to.equal('exampleUser');
+            expect(username).to.equal('exampleUser');
           });
       });
       it('Should reject reservations with missing propertyName', () => {
@@ -104,7 +104,7 @@ describe('/api/dibs/reservation', () => {
           .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            user,
+            username,
             start,
             end
           })
@@ -129,7 +129,7 @@ describe('/api/dibs/reservation', () => {
           .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            user,
+            username,
             propertyName,
             end
           })
@@ -154,7 +154,7 @@ describe('/api/dibs/reservation', () => {
           .post('/api/dibs/reservations')
           .set('authorization', `Bearer ${token}`)
           .send({
-            user,
+            username,
             propertyName,
             start
           })
@@ -262,7 +262,7 @@ describe('/api/dibs/reservation', () => {
     describe('PUT', () => {
       it('it should UPDATE a reservation given the id', () => {
         const updateData = {
-          user: 'newUser',
+          username: 'newUser',
           propertyName: 'newProperty',
           start: new Date('2011-10-01'),
           end: new Date('2011-10-11')

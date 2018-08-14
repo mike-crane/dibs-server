@@ -6,40 +6,16 @@ mongoose.Promise = global.Promise;
 
 const statesArray = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"];
 
-// const PropertySchema = mongoose.Schema({
-//   name: { type: String, required: true },
-//   address: { type: Object, required: true,
-//     street: String, required: true,
-//     city: String, required: true,
-//     state: {
-//       type: String,
-//       uppercase: true,
-//       required: true,
-//       enum: statesArray
-//     },
-//     zipcode: Number, required: true
-//   },
-//   type: { type: String, required: true },
-//   owner: { type: String},
-//   thumbUrl: { type: String }
-// });
-
-// PropertySchema.methods.serialize = function () {
-//   return {
-//     name: this.name,
-//     address: this.address,
-//     type: this.type,
-//     owner: this.owner,
-//     thumbUrl: this.thumbUrl,
-//     id: this._id
-//   };
-// };
-
 const PropertySchema = mongoose.Schema({
   name: { type: String, required: true },
   street: { type: String, required: true },
   city: { type: String, required: true },
-  state: { type: String, required: true },
+  state: { 
+    type: String, 
+    required: true, 
+    uppercase: true, 
+    enum: statesArray 
+  },
   zipcode: { type: Number, required: true },
   type: { type: String, required: true },
   owner: { type: String },
