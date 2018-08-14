@@ -19,7 +19,6 @@ chai.use(chaiHttp);
 chai.use(chaiDatetime);
 
 describe('/api/dibs/reservation', () => {
-  // const username = 'exampleUser';
   const propertyName = 'exampleProperty';
   const start = new Date('2018-05-01');
   const end = new Date('2018-05-11');
@@ -173,90 +172,6 @@ describe('/api/dibs/reservation', () => {
             expect(res.body.location).to.equal('end');
           });
       });
-      // it('Should reject reservations with empty property name', () => {
-      //   return chai
-      //     .request(app)
-      //     .post('/api/dibs/reservations')
-      //     .set('authorization', `Bearer ${token}`)
-      //     .send({
-      //       user,
-      //       propertyName: '',
-      //       start,
-      //       end
-      //     })
-      //     .then(() =>
-      //       expect.fail(null, null, 'Request should not succeed')
-      //     )
-      //     .catch(err => {
-      //       if (err instanceof chai.AssertionError) {
-      //         throw err;
-      //       }
-
-      //       const res = err.response;
-      //       expect(res).to.have.status(422);
-      //       expect(res.body.reason).to.equal('ValidationError');
-      //       expect(res.body.message).to.equal(
-      //         'Must be at least 1 characters long'
-      //       );
-      //       expect(res.body.location).to.equal('propertyName');
-      //     });
-      // });
-      // it('Should reject reservations with empty start', () => {
-      //   return chai
-      //     .request(app)
-      //     .post('/api/dibs/reservations')
-      //     .set('authorization', `Bearer ${token}`)
-      //     .send({
-      //       user,
-      //       propertyName,
-      //       start: '',
-      //       end
-      //     })
-      //     .then(() =>
-      //       expect.fail(null, null, 'Request should not succeed')
-      //     )
-      //     .catch(err => {
-      //       if (err instanceof chai.AssertionError) {
-      //         throw err;
-      //       }
-
-      //       const res = err.response;
-      //       expect(res).to.have.status(422);
-      //       expect(res.body.reason).to.equal('ValidationError');
-      //       expect(res.body.message).to.equal(
-      //         'Must be at least 1 characters long'
-      //       );
-      //       expect(res.body.location).to.equal('start');
-      //     });
-      // });
-      // it('Should reject reservations with empty end', () => {
-      //   return chai
-      //     .request(app)
-      //     .post('/api/dibs/reservations')
-      //     .set('authorization', `Bearer ${token}`)
-      //     .send({
-      //       user,
-      //       propertyName,
-      //       start,
-      //       end: ''
-      //     })
-      //     .then(() =>
-      //       expect.fail(null, null, 'Request should not succeed')
-      //     )
-      //     .catch(err => {
-      //       if (err instanceof chai.AssertionError) {
-      //         throw err;
-      //       }
-
-      //       const res = err.response;
-      //       expect(res).to.have.status(422);
-      //       expect(res.body.reason).to.equal('ValidationError');
-      //       expect(res.body.message).to.equal(
-      //         'Must be at least 1 characters long'
-      //       );
-      //       expect(res.body.location).to.equal('end');
-      //     });
-      // });
     });
 
     describe('PUT', () => {
