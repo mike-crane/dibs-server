@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
 const cors = require("cors");
+const { CLIENT_ORIGIN } = require("./config");
 
 // destructuring assignment with renaming
 const { router: dibsRouter } = require('./dibs');
@@ -22,7 +23,6 @@ const app = express();
 app.use(morgan('common'));
 
 // CORS
-const { CLIENT_ORIGIN } = require('./config');
 
 app.use(
   cors({
